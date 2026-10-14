@@ -1,6 +1,7 @@
 
 from dotenv import load_dotenv
 from tinyfish import TinyFish
+from deadline_utils import extract_deadline, find_deadline_text
 import json
 
 load_dotenv()
@@ -86,10 +87,24 @@ for page in pages.results:
             "Not specified"
         )
 
+        # Look for a line that explicitly mentions a deadline
+        deadline_line = find_deadline_text(page.text)
+
+        # Extract a date only if we found a deadline-related line
+        deadline = (
+            extract_deadline(deadline_line)
+            if deadline_line
+            else None
+        )
+
         opportunity = {
             "title": title,
             "eligibility": eligibility or "Not specified",
             "duration": duration or "Not specified",
+            "deadline": deadline,
+            "deadline_status": (
+                "unverified" if deadline else "unknown"
+            ),
             "source_url": page.url
         }
 
