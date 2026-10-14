@@ -111,12 +111,20 @@ for page in pages.results:
         all_opportunities.append(opportunity)
         print(json.dumps(opportunity, indent=2))
 
-with open("opportunities.json", "w", encoding="utf-8") as file:
-    json.dump(
-        all_opportunities,
-        file,
-        indent=2,
-        ensure_ascii=False
+if all_opportunities:
+    with open("opportunities.json", "w", encoding="utf-8") as file:
+        json.dump(
+            all_opportunities,
+            file,
+            indent=2,
+            ensure_ascii=False
+        )
+
+    print(f"Saved {len(all_opportunities)} opportunities.")
+else:
+    print(
+        "No opportunities were extracted. "
+        "Existing opportunities.json was not changed."
     )
 
 print(
